@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#f8f8f8">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="100dp">
+
+        <TextView
+            android:id="@+id/textViewNoInternet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Connecting to Server, Please Wait..."
+            android:textSize="20sp"
+            android:textColor="#FF0000"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="16dp" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:indeterminate="true"
+            android:indeterminateTint="#F44336"
+            android:indeterminateTintMode="src_in"
+            android:layout_centerInParent="true"
+            android:visibility="visible"
+            style="@android:style/Widget.Material.ProgressBar.Large"/>
+
+    </LinearLayout>
+</RelativeLayout>
